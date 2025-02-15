@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import root from './routes/root';
+import applicationRoutes from './routes/applicationRoutes';
 import impressionRoutes from './routes/impressionRoutes';
 import missionRoutes from './routes/missionRoutes';
 
@@ -9,6 +10,7 @@ app.use(express.json());
 
 app.use("/", root);
 app.use("/r/", missionRoutes);
+app.use("/r/apply", applicationRoutes);
 app.use("/r/impression", impressionRoutes);
 
 const PORT = 3003;
