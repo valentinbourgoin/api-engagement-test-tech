@@ -2,14 +2,20 @@ import { Router, Request, Response } from 'express';
 import prisma from '../prisma/client';
 import { z } from 'zod';
 
-export const impressionRouter: Router = Router(); 
+const router: Router = Router(); 
 
 const impressionSchema = z.object({
-    missionId: z.string().regex(/^\[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/, 'Mission ID doit être un identifiant UID'),
-    publisherId: z.string().regex(/^\[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/, 'Publisher ID doit être un identifiant UID')
+    missionId: z.string().regex(
+        /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/, 
+        'Mission ID doit être un identifiant UID'
+    ),
+    publisherId: z.string().regex(
+        /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/, 
+        'Publisher ID doit être un identifiant UID'
+    )
 });
 
-impressionRouter.get('/impression/:missionId/:publisherId', async (req: Request, res: Response): Promise<Response> => {
+router.get('/:missionId/:publisherId', async (req: Request, res: Response) => {
     const validation = impressionSchema.safeParse(req.params);
     if (!validation.success) {
         return res.status(400).json({ error: validation.error.errors });
@@ -50,3 +56,5 @@ impressionRouter.get('/impression/:missionId/:publisherId', async (req: Request,
         return res.status(500).json({ error: 'Erreur lors de l’enregistrement de l’impression' });
     }
 });
+
+export default router;

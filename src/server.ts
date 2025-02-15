@@ -1,11 +1,13 @@
 import express, { Application } from 'express';
-import { impressionRouter } from './routes/impressionRoutes';
+import root from './routes/root';
+import impressionRoutes from './routes/impressionRoutes';
 
 const app: Application = express();
 
-app.use('/r', impressionRouter);
+app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Serveur en écoute sur le port ${PORT}`);
-});
+app.use("/", root);
+app.use("/r/impression", impressionRoutes);
+
+const PORT = 3003;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
