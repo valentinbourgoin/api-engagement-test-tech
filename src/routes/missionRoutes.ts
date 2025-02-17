@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prisma/client';
 import { z } from 'zod';
+import TokenGenerator from '../utils/tokenGenerator';
 
 const router: Router = Router(); 
 
@@ -44,7 +45,7 @@ router.get('/:missionId/:publisherId', async (req: Request, res: Response) => {
     }
 
     try {
-        const token = "1234567890";
+        const token: string = new TokenGenerator().getToken();
 
         await prisma.redirection.create({
             data: {

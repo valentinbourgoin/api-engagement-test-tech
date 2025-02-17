@@ -41,7 +41,7 @@ router.get('/', async (req: Request, res: Response) => {
     });
 
     if (!publisher) {
-        return res.status(401).json({ error: 'Publisher introuvable' });
+        return res.status(404).json({ error: 'Publisher introuvable' });
     }
 
     const redirection = await prisma.redirection.findUnique({
@@ -51,7 +51,7 @@ router.get('/', async (req: Request, res: Response) => {
     });
 
     if (!redirection || redirection.missionId !== missionId || redirection.publisherId !== publisherId) {
-        return res.status(404).json({ error: 'Token invalide' });
+        return res.status(401).json({ error: 'Token invalide' });
     }
 
     try {
